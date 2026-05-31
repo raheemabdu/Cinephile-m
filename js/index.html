@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cinephile</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+    /* ===== GLOBAL RESPONSIVE FIX ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+.movie-card {
+  flex: 0 0 auto;
+  width: 160px;
+}
+
+@media (min-width: 640px) {
+  .movie-card {
+    width: 170px;
+  }
+}
+
+@media (min-width: 768px) {
+  .movie-card {
+    width: 190px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .movie-card {
+    width: 200px;
+  }
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family: Arial, sans-serif;
+  background:#1A1a1a;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
+
+::-webkit-scrollbar{
+  display:none;
+}
+
+.movie-card{
+  background:#1E1E1E;
+  border-radius:8px;
+  overflow:hidden;
+  transition:.3s;
+  min-width:190px;
+  cursor:pointer;
+}
+
+.movie-card:hover{
+  transform:scale(1.03);
+}
+
+.movie-card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+}
+
+.overlay{
+  background:linear-gradient(to top,#000,transparent);
+}
+
+</style>
+</head>
+
+<body class="text-white overflow-x-hidden">
+
+<!-- NAVBAR -->
+<header class="w-full fixed top-0 left-0 z-50 bg-[#131313B2]/95 backdrop-blur border-b border-[#1A1A1A]">
+
+<div class="max-w-[1400px] mx-auto px-10 py-5 flex items-center justify-between">
+
+<!-- LEFT -->
+<div class="flex items-center gap-12">
+
+<h1 class="text-[#CC0000] text-3xl font-black tracking-wider">
+CINEPHILE
+</h1>
+
+<nav class="flex items-center gap-8 text-sm">
+
+<a href="../js/index.html"
+class="text-[#CC0000] font-semibold border-b border-[#CC0000] pb-1">
+Home
+</a>
+
+<a href="../js/favourites.html"
+class="text-[#AAAAAA] hover:text-white transition">
+Favourites
+</a>
+
+</nav>
+
+</div>
+
+<!-- RIGHT -->
+<div class="flex items-center gap-5">
+
+<button class="text-[#AAAAAA] hover:text-white text-lg ">
+🔍
+</button>
+
+<button class="text-[#AAAAAA] hover:text-white text-lg">
+👤
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+<section id="hero"
+class="max-w-[2000px] bg-cover bg-center relative flex items-end pt-32 min-h-screen">
+
+<div class="absolute inset-0 overlay"></div>
+
+<div class="relative z-10 px-10 pb-24 max-w-2xl">
+
+<span class="bg-[#CC0000] text-white text-xs px-4 py-2 rounded">
+FEATURED TODAY
+</span>
+
+<h1 id="heroTitle" class="text-6xl font-black mt-5">
+Loading...
+</h1>
+
+<p id="heroDescription" class="mt-5 text-[#ddd]"></p>
+
+<div class="flex gap-4 mt-8">
+<button class="bg-[#CC0000] px-8 py-4 rounded">▶ Watch Trailer</button>
+<button class="bg-[#1E1E1E] px-8 py-4 rounded">More Info</button>
+</div>
+
+</div>
+</section>
+
+<!-- SEARCH -->
+<section class="px-10 -mt-8 relative z-30">
+
+<div
+class="bg-[#0E0E0E] rounded-xl px-8 py-8 border border-[#222]">
+
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+
+<!-- LEFT -->
+<div>
+
+<h3 class="font-bold text-3xl">
+Discover your next favourite movie
+</h3>
+
+<p class="text-[#AAAAAA] text-base mt-3">
+Search across 500,000+ titles, actors, and directors
+</p>
+
+</div>
+
+<!-- RIGHT -->
+<div
+class="bg-[#0D0D0D] border border-[#2A2A2A] rounded-xl px-6 py-4 flex items-center gap-4 w-full lg:w-[420px]">
+
+<div class="text-[#AAAAAA] text-xl">
+🔍
+</div>
+
+<input
+id="searchInput"
+type="text"
+placeholder="Search movies..."
+class="w-full bg-transparent outline-none text-white placeholder-[#666]" />
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- TRENDING -->
+<section class="px-10 mt-20">
+
+<div class="flex justify-between mb-8">
+<h2 class="text-3xl font-bold ">Trending Now</h2>
+
+
+<div class="flex gap-3">
+<button id="scrollLeft" class="w-10 h-10 bg-[#1A1A1A] rounded">❮</button>
+<button id="scrollRight" class="w-10 h-10 bg-[#1A1A1A] rounded">❯</button>
+</div>
+</div>
+
+
+<div id="moviesContainer"
+class="flex gap-5 overflow-hidden">
+</div>
+
+<div class="flex justify-center mt-10">
+<button id="viewAllBtn"
+class="border border-[#CC0000] text-[#CC0000] px-8 py-3 rounded hover:bg-[#CC0000] hover:text-white">
+Show More Movies
+</button>
+</div>
+
+</section>
+
+<!-- CURATED -->
+<section class="px-10 mt-24 bg-[#0E0E0E] py-16 rounded-t-[40px]">
+
+<h2 class="text-3xl font-bold mb-8  inline-block px-4 py-2 rounded">
+Curated Collections
+</h2>
+
+<div class="grid md:grid-cols-2 gap-8">
+
+<div class="relative h-[320px] overflow-hidden rounded-xl bg-[#1A1A1A]">
+<img id="img1" class="w-full h-full object-cover opacity-80">
+<div class="absolute inset-0 bg-black/60"></div>
+</div>
+
+<div class="relative h-[320px] overflow-hidden rounded-xl bg-black">
+<img id="img2" class="w-full h-full object-cover opacity-80">
+<div class="absolute inset-0 bg-black/60"></div>
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="mt-24 border-t border-[#1A1A1A] bg-[#0E0E0E]">
+
+<div
+class="max-w-[1400px] mx-auto px-10 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
+
+<div>
+
+<h2 class="text-[#CC0000] text-2xl font-black">
+CINEPHILE
+</h2>
+
+<p class="text-[#666] text-sm mt-2">
+© 2026 Cinephile. All rights reserved.
+</p>
+
+</div>
+
+<div class="flex gap-8 text-[#AAAAAA] text-sm">
+
+<a href="#">API Credits</a>
+<a href="#">Terms</a>
+<a href="#">Privacy</a>
+<a href="#">Contact</a>
+
+</div>
+
+<div class="flex gap-4 text-xl">
+
+<span>🌐</span>
+<span>🎬</span>
+
+</div>
+
+</div>
+
+</footer>
+
+<script src="../js/api.js"></script>
+<script src="../js/home.js"></script>
+
+</body>
+</html>
